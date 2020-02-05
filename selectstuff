@@ -1,0 +1,37 @@
+SELECT 
+
+bank.itemId,
+bank.itemName,
+
+(bank.count - (SELECT IFNULL(SUM(sold.count),'0') FROM sold WHERE sold.itemId=bank.itemId)) as count,
+
+(case when (bank.revisedWeight != 0) THEN (bank.revisedWeight - (SELECT IFNULL(sum(sold.weight),'0') FROM sold WHERE sold.itemId=bank.itemId)) ELSE (bank.weight - (SELECT IFNULL(sum(sold.weight),'0') FROM sold WHERE	sold.itemId=bank.itemId))  END) as weight,
+
+
+(CASE WHEN bank.subtype="weight" THEN ((case when (bank.revisedWeight != 0) THEN (bank.revisedWeight - (SELECT IFNULL(sum(sold.weight),'0') FROM sold WHERE sold.itemId=bank.itemId)) ELSE (bank.weight - (SELECT IFNULL(sum(sold.weight),'0') FROM sold WHERE	sold.itemId=bank.itemId))  END)*bank.unitPrice) ELSE ((bank.count - (SELECT IFNULL(SUM(sold.count),'0') FROM sold WHERE sold.itemId=bank.itemId))*bank.unitPrice) END) as price
+
+FROM bank WHERE bank.itemId='1';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT 
+bank.itemId,
+bank.itemName,
+(bank.count - (SELECT IFNULL(SUM(sold.count),'0') FROM sold WHERE sold.itemId=bank.itemId)) as count,
+(case when (bank.revisedWeight != 0) THEN ABS((SELECT IFNULL(sum(sold.weight),'0') FROM sold WHERE sold.itemId=bank.itemId) - bank.revisedWeight) ELSE ABS(bank.weight - (SELECT IFNULL(sum(sold.weight),'0') FROM sold WHERE	sold.itemId=bank.itemId))  END) as weight,
+bank.unitPrice as unitPrice
+FROM bank WHERE bank.itemId='2'
