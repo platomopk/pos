@@ -1,0 +1,300 @@
+CREATE DATABASE IF NOT EXISTS `pos` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `pos`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank`
+--
+
+CREATE TABLE `bank` (
+  `itemId` int(11) NOT NULL,
+  `itemName` varchar(300) NOT NULL DEFAULT 'empty',
+  `vendor` varchar(300) NOT NULL DEFAULT 'empty',
+  `weight` float NOT NULL DEFAULT '0',
+  `revisedWeight` varchar(10) NOT NULL DEFAULT 'empty',
+  `count` int(11) NOT NULL DEFAULT '0',
+  `price` float NOT NULL DEFAULT '0',
+  `salesPrice` float NOT NULL DEFAULT '0',
+  `unitPrice` float DEFAULT '0',
+  `unitsalesprice` float NOT NULL DEFAULT '0',
+  `addedOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` varchar(100) NOT NULL DEFAULT 'empty',
+  `subtype` varchar(100) NOT NULL DEFAULT 'empty',
+  `parent` int(11) NOT NULL DEFAULT '0',
+  `wastage` varchar(50) NOT NULL DEFAULT 'empty',
+  `leftover` varchar(50) NOT NULL DEFAULT 'empty',
+  `processable` int(11) NOT NULL DEFAULT '1',
+  `margin` float NOT NULL DEFAULT '0',
+  `content` float NOT NULL DEFAULT '0',
+  `fats` float NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bank`
+--
+
+INSERT INTO `bank` (`itemId`, `itemName`, `vendor`, `weight`, `revisedWeight`, `count`, `price`, `salesPrice`, `unitPrice`, `unitsalesprice`, `addedOn`, `type`, `subtype`, `parent`, `wastage`, `leftover`, `processable`, `margin`, `content`, `fats`) VALUES
+(1, 'Mutton Whole', 'ABC Industries', 10, '0', 0, 1000, 1100, 100, 110, '2017-10-13 16:11:18', 'Mutton', 'weight', 0, 'empty', '0', 1, 10, 0, 0),
+(2, 'Mutton leg Simple', 'self', 2, 'empty', 2, 400, 440, 200, 220, '2017-10-13 16:12:40', 'Mutton', 'count', 1, 'empty', 'empty', 0, 10, 1.85, 0.15),
+(3, 'Mutton leg Finished', 'self', 4, 'empty', 2, 800, 880, 400, 440, '2017-10-13 16:12:40', 'Mutton', 'count', 1, 'empty', 'empty', 0, 10, 3.5, 0.5),
+(4, 'Mutton Shoulder Simple', 'self', 4, 'empty', 2, 800, 880, 400, 440, '2017-10-13 16:12:40', 'Mutton', 'count', 1, 'empty', 'empty', 0, 10, 3.8, 0.2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `revisions`
+--
+
+CREATE TABLE `revisions` (
+  `revisionId` int(11) NOT NULL,
+  `itemId` int(11) NOT NULL,
+  `originalWeight` float NOT NULL DEFAULT '0',
+  `revisedWeight` float NOT NULL DEFAULT '0',
+  `revisedOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `revisions`
+--
+
+INSERT INTO `revisions` (`revisionId`, `itemId`, `originalWeight`, `revisedWeight`, `revisedOn`) VALUES
+(1, 1, 10, 0, '2017-10-13 16:12:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sold`
+--
+
+CREATE TABLE `sold` (
+  `soldId` int(11) NOT NULL,
+  `soldOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userId` int(11) NOT NULL,
+  `itemId` int(11) NOT NULL,
+  `count` int(11) NOT NULL,
+  `weight` float NOT NULL DEFAULT '0',
+  `price` float NOT NULL DEFAULT '0',
+  `unitPrice` float NOT NULL DEFAULT '0',
+  `code` varchar(150) NOT NULL,
+  `discount` float NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subcategories`
+--
+
+CREATE TABLE `subcategories` (
+  `subId` int(11) NOT NULL,
+  `subcategory` varchar(200) NOT NULL,
+  `category` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `subcategories`
+--
+
+INSERT INTO `subcategories` (`subId`, `subcategory`, `category`) VALUES
+(1, 'Mutton Whole', 'Mutton'),
+(2, 'Mutton Aqiqa', 'Mutton'),
+(3, 'Mutton leg Simple', 'Mutton'),
+(4, 'Mutton leg Finished', 'Mutton'),
+(5, 'Mutton Shoulder Simple', 'Mutton'),
+(6, 'Mutton Shoulder Finished', 'Mutton'),
+(7, 'Mutton Neck Simple', 'Mutton'),
+(8, 'Mutton Neck Finished', 'Mutton'),
+(9, 'Mutton Chest Simple', 'Mutton'),
+(10, 'Mutton Chest Finished', 'Mutton'),
+(11, 'Mutton Back Chops Simple', 'Mutton'),
+(12, 'Mutton Back Chops Finished', 'Mutton'),
+(13, 'Mutton Front Chops Simple', 'Mutton'),
+(14, 'Mutton Front Chops Finished', 'Mutton'),
+(15, 'Mutton Joints (Machli)', 'Mutton'),
+(16, 'Mutton Mix', 'Mutton'),
+(17, 'Mutton Mince', 'Mutton'),
+(18, 'Mutton Paaye', 'Mutton'),
+(19, 'Mutton Brain', 'Mutton'),
+(20, 'Mutton Offal (Ogarri)', 'Mutton'),
+(21, 'Mutton Liver', 'Mutton'),
+(22, 'Mutton Kidney', 'Mutton'),
+(23, 'Mutton Kaporay', 'Mutton'),
+(24, 'Mutton Takka Tak', 'Mutton'),
+(25, 'Mutton Waste', 'Mutton'),
+(26, 'Mutton Boneless', 'Mutton'),
+(27, 'Sheep/Lamb', 'Mutton'),
+(28, 'Chicken Mince', 'Chicken'),
+(29, 'Chicken Whole', 'Chicken'),
+(30, 'Chicken whole with Skin', 'Chicken'),
+(31, 'Chicken Drum Stick', 'Chicken'),
+(32, 'Chicken Full Leg', 'Chicken'),
+(33, 'Chicken Karahi Cut', 'Chicken'),
+(34, 'Chicken Qorma Cut', 'Chicken'),
+(35, 'Chicken Bryani Cut', 'Chicken'),
+(36, 'Chicken Thigh', 'Chicken'),
+(37, 'Chicken Wings', 'Chicken'),
+(38, 'Chicken Neck', 'Chicken'),
+(39, 'Chicken Boneless', 'Chicken'),
+(40, 'Chicken Roast', 'Chicken'),
+(41, 'Chicken Breast with Bone', 'Chicken'),
+(42, 'Veal Leg Simple', 'Veal'),
+(43, 'Veal Leg (Finished)', 'Veal'),
+(44, 'Veal Shoulder Simple', 'Veal'),
+(45, 'Veal Shoulder (Finished)', 'Veal'),
+(46, 'Veal Nihari Cut bong (S)', 'Veal'),
+(47, 'Veal Under Cut (S)', 'Veal'),
+(48, 'Veal Undercut (Finished)', 'Veal'),
+(49, 'Veal Neck with Bone Simple', 'Veal'),
+(50, 'Veal Front Chops Simple', 'Veal'),
+(51, 'Veal Back Chops Simple', 'Veal'),
+(52, 'Veal Chest with bone Simple', 'Veal'),
+(53, 'Veal Simple Bone', 'Veal'),
+(54, 'Veal T-Bone Steak (F)', 'Veal'),
+(55, 'Veal Mince', 'Veal'),
+(56, 'Veal Nihari Cut', 'Veal'),
+(57, 'Veal Eye Round', 'Veal'),
+(58, 'Veal Boneless Cubes Finished', 'Veal'),
+(59, 'Veal Boneless Nihari (Finished)', 'Veal'),
+(60, 'Veal Brain', 'Veal'),
+(61, 'Veal Tail (S)', 'Veal'),
+(62, 'Veal Tail (F)', 'Veal'),
+(63, 'Veal Waste', 'Veal');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `userId` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendors`
+--
+
+CREATE TABLE `vendors` (
+  `vendorId` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `vendors`
+--
+
+INSERT INTO `vendors` (`vendorId`, `name`) VALUES
+(1, 'ABC Industries'),
+(2, 'DEF Industries');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wastage`
+--
+
+CREATE TABLE `wastage` (
+  `id` int(11) NOT NULL,
+  `itemId` int(11) NOT NULL,
+  `wasted` varchar(10) NOT NULL,
+  `updated_on` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `wastage`
+--
+
+INSERT INTO `wastage` (`id`, `itemId`, `wasted`, `updated_on`) VALUES
+(1, 1, '0', '2017-10-13 16:12:40');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `bank`
+--
+ALTER TABLE `bank`
+  ADD PRIMARY KEY (`itemId`);
+
+--
+-- Indexes for table `revisions`
+--
+ALTER TABLE `revisions`
+  ADD PRIMARY KEY (`revisionId`);
+
+--
+-- Indexes for table `sold`
+--
+ALTER TABLE `sold`
+  ADD PRIMARY KEY (`soldId`);
+
+--
+-- Indexes for table `subcategories`
+--
+ALTER TABLE `subcategories`
+  ADD PRIMARY KEY (`subId`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`userId`);
+
+--
+-- Indexes for table `vendors`
+--
+ALTER TABLE `vendors`
+  ADD PRIMARY KEY (`vendorId`);
+
+--
+-- Indexes for table `wastage`
+--
+ALTER TABLE `wastage`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `bank`
+--
+ALTER TABLE `bank`
+  MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `revisions`
+--
+ALTER TABLE `revisions`
+  MODIFY `revisionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `sold`
+--
+ALTER TABLE `sold`
+  MODIFY `soldId` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `subcategories`
+--
+ALTER TABLE `subcategories`
+  MODIFY `subId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `vendors`
+--
+ALTER TABLE `vendors`
+  MODIFY `vendorId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `wastage`
+--
+ALTER TABLE `wastage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;--
